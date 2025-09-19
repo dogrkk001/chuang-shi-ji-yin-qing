@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创世纪引擎 V40.0 - 终极梦想实现版</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+</head>
+<body class="theme-cyberpunk">
+    <div class="main-container">
+        <header class="main-header">
+            <div>
+                <h1><i class="fas fa-atom"></i> 创世纪引擎 V40.0</h1>
+                <p>灵感驱动 · 智能叙事构建系统</p>
+            </div>
+            
+            <div class="user-auth-section">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <select id="automation-mode-select" title="选择创作模式">
+                        <option value="manual">全程手动</option>
+                        <option value="full-auto">全程自动</option>
+                    </select>
+                </div>
+                <div class="theme-switcher">
+                    <button class="theme-btn active" data-theme="cyberpunk" title="赛博朋克主题"><i class="fas fa-robot"></i></button>
+                    <button class="theme-btn" data-theme="fantasy" title="西方奇幻主题"><i class="fas fa-scroll"></i></button>
+                </div>
+                <span id="welcome-message">请先登录</span>
+                <button id="login-btn" class="settings-btn">登录</button>
+                <button id="register-btn" class="settings-btn">注册</button>
+                <button id="logout-btn" class="settings-btn hidden">登出</button>
+                <button id="project-manager-btn" class="settings-btn" title="项目管理"><i class="fas fa-folder-open"></i> 项目</button>
+                <button id="toggle-database-btn" class="settings-btn active" title="隐藏资料库"><i class="fas fa-database"></i></button>
+                <button id="api-settings-btn" class="settings-btn" title="API设置"><i class="fas fa-cog"></i></button>
+            </div>
+        </header>
+        
+        <div id="app-content" class="disabled">
+            <nav class="main-nav-tabs">
+                <button class="main-tab active" data-target="inspiration-panel"><i class="fas fa-lightbulb"></i> 灵感系统</button>
+                <button class="main-tab" data-target="worldview-panel"><i class="fas fa-globe-americas"></i> 世界观设定</button>
+                <button class="main-tab" data-target="char-generator-panel"><i class="fas fa-address-card"></i> 人物卡生成器</button>
+                <button class="main-tab" data-target="story-generator-panel"><i class="fas fa-scroll"></i> 故事卡生成器</button>
+                <button class="main-tab" data-target="emotion-generator-panel"><i class="fas fa-heart-pulse"></i> 情绪卡生成器</button>
+                <button class="main-tab" data-target="blueprint-panel"><i class="fas fa-drafting-compass"></i> 蓝图骨架</button>
+                <button class="main-tab" data-target="scribe-panel"><i class="fas fa-feather-alt"></i> 圣典执笔者</button>
+                <button class="main-tab" data-target="dictionary-panel"><i class="fas fa-spell-check"></i> 后期与导出</button>
+                <button class="main-tab database-tab" data-target="canon-panel"><i class="fas fa-book-open"></i> 叙事圣典</button>
+                <button class="main-tab database-tab" data-target="character-panel"><i class="fas fa-book-user"></i> 角色系统</button>
+                <button class="main-tab database-tab" data-target="archetype-panel"><i class="fas fa-theater-masks"></i> 角色原型</button>
+                <button class="main-tab database-tab" data-target="plot-panel"><i class="fas fa-sitemap"></i> 情节系统</button>
+                <button class="main-tab database-tab" data-target="emotion-panel"><i class="fas fa-chart-line"></i> 情绪系统</button>
+            </nav>
+
+            <main>
+                <div id="inspiration-panel" class="tab-content active"></div>
+                <div id="worldview-panel" class="tab-content document-panel"></div>
+                <div id="char-generator-panel" class="tab-content"></div>
+                <div id="story-generator-panel" class="tab-content"></div>
+                <div id="emotion-generator-panel" class="tab-content"></div>
+                <div id="blueprint-panel" class="tab-content document-panel"></div>
+                <div id="scribe-panel" class="tab-content document-panel"></div>
+                <div id="dictionary-panel" class="tab-content">
+                    <div class="dictionary-layout">
+                        <div class="polishing-pipeline">
+                            <h3><i class="fas fa-tasks"></i> 终极润色工具箱</h3>
+                            <div class="polishing-step" id="step1-format">
+                                <h4>第一步：初步排版</h4>
+                                <p>AI将进行初步修整，调整段落，优化长句，使其更适合手机阅读。</p>
+                                <button id="start-preliminary-polish-btn" class="action-btn" disabled><i class="fas fa-mobile-alt"></i> 启动初步排版</button>
+                            </div>
+                            <div class="polishing-step" id="step2-suggest">
+                                <h4>第二步：获取整体建议</h4>
+                                <p>AI资深责编将通读全文，并提供宏观的、专业的修改建议报告。</p>
+                                <button id="get-polish-suggestions-btn" class="action-btn" disabled><i class="fas fa-user-edit"></i> 获取编辑建议</button>
+                            </div>
+                            <div class="polishing-step" id="step3-refine">
+                                <h4>第三步：全文精修</h4>
+                                <p>AI将根据编辑建议和内置方法论，对全文进行一次性深度润色。</p>
+                                <button id="start-full-refinement-btn" class="action-btn" disabled><i class="fas fa-wand-magic-sparkles"></i> 启动全文精修</button>
+                            </div>
+                            <div class="polishing-step" id="step4-tomato">
+                                <h4>第四步：一键番茄化</h4>
+                                <p>AI将为您的作品生成吸引人的标题、简介和标签，并套用标准格式。</p>
+                                <button id="start-tomato-format-btn" class="action-btn" disabled><i class="fas fa-tags"></i> 启动番茄化</button>
+                            </div>
+                        </div>
+                        <div class="polishing-workspace">
+                            <div class="workspace-tabs">
+                                <button class="workspace-tab active" data-target="prose-view">稿件正文</button>
+                                <button class="workspace-tab" data-target="suggestions-view">编辑建议</button>
+                            </div>
+                            <div id="prose-view" class="workspace-content active">
+                                <textarea id="polished-prose-output" class="editable-ai-content" placeholder="请先在“圣典执笔者”模块完成写作，或直接在此处粘贴您的外部文稿..."></textarea>
+                            </div>
+                            <div id="suggestions-view" class="workspace-content document-panel">
+                                <p>请先执行“获取整体建议”来生成报告。</p>
+                            </div>
+                            <div id="final-export-section" class="final-export-section">
+                                <h4><i class="fas fa-file-export"></i> 最终整合导出</h4>
+                                <p>将工作区内的最终稿件，连同本项目的所有创作资料（大纲、设定等）整合并导出。</p>
+                                <div id="final-export-buttons" class="button-group" style="margin-top: 15px; gap: 10px;">
+                                    <button class="settings-btn" data-format="txt"><i class="fas fa-file-alt"></i> 导出整合稿.txt</button>
+                                    <button class="settings-btn" data-format="md"><i class="fab fa-markdown"></i> 导出整合稿.md</button>
+                                    <button class="settings-btn" data-format="doc"><i class="fas fa-file-word"></i> 导出整合稿.doc</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="canon-panel" class="tab-content document-panel"></div>
+                <div id="character-panel" class="tab-content document-panel"></div>
+                <div id="archetype-panel" class="tab-content document-panel"></div>
+                <div id="plot-panel" class="tab-content document-panel"></div>
+                <div id="emotion-panel" class="tab-content document-panel"></div>
+            </main>
+        </div>
+    </div>
+
+    <div id="api-settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-cogs"></i> API 设置</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="api-provider">选择API服务商</label>
+                    <select id="api-provider">
+                        <option value="gemini">Google Gemini</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="siliconflow">硅基流动 (Silicon Flow)</option>
+                        <option value="ollama">Ollama (本地)</option>
+                        <option value="custom">自定义 (OpenAI格式)</option>
+                    </select>
+                </div>
+                <div class="form-group api-setting hidden" id="api-gemini-model-group">
+                    <label for="api-gemini-model">选择 Gemini 模型</label>
+                    <select id="api-gemini-model">
+                        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+                    </select>
+                </div>
+                <div class="form-group api-setting hidden" id="api-deepseek-model-group">
+                    <label for="api-deepseek-model">选择 DeepSeek 模型</label>
+                    <select id="api-deepseek-model">
+                        <option value="deepseek-chat">deepseek-chat</option>
+                        <option value="deepseek-coder">deepseek-coder</option>
+                    </select>
+                </div>
+                <div class="form-group api-setting" id="api-key-group">
+                    <label for="api-key">API Key</label>
+                    <input type="password" id="api-key" placeholder="在此处粘贴您的 API Key">
+                </div>
+                <div class="form-group api-setting hidden" id="api-base-url-group">
+                    <label for="api-base-url">API Base URL</label>
+                    <input type="text" id="api-base-url" placeholder="例如: http://localhost:11434/v1">
+                </div>
+                <div class="form-group api-setting hidden" id="api-model-name-group">
+                    <label for="api-model-name">模型名称</label>
+                    <input type="text" id="api-model-name" placeholder="例如: llama3:latest 或 DeepSeek-V2-Chat">
+                </div>
+                <small>您的API密钥将仅保存在您的浏览器本地。</small>
+            </div>
+            <div class="modal-footer">
+                <span id="settings-status"></span>
+                <button id="save-settings-btn" class="action-btn">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="project-manager-modal" class="modal-overlay hidden">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2><i class="fas fa-folder-open"></i> 项目管理中心</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="project-list-container"></div>
+            </div>
+            <div class="modal-footer">
+                <span id="project-status-message"></span>
+                <button id="save-current-project-btn" class="action-btn"><i class="fas fa-save"></i> 保存当前工作</button>
+                <button id="save-as-new-project-btn" class="settings-btn"><i class="fas fa-plus"></i> 将当前工作另存为新项目</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="assistant-widget">
+        <button id="assistant-toggle-btn" title="AI逻辑编辑"><i class="fas fa-user-edit"></i></button>
+        <div id="assistant-window" class="hidden">
+            <div class="assistant-header">
+                <h3>AI逻辑编辑</h3>
+                <span id="assistant-status" class="status-pending">待命中</span>
+                <button id="assistant-close-btn">&times;</button>
+            </div>
+            <div id="assistant-messages">
+                 <div class="ai-message">你好，我是你的专属逻辑编辑。请在左侧生成灵感创意，我会为你进行逻辑自洽性审核。</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="title-selection-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-wand-magic-sparkles"></i> AI 备选标题</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>请从以下由AI根据方法论生成的标题中，选择一个最满意的：</p>
+                <div id="title-options-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="character-editor-modal" class="modal-overlay hidden">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modal-editor-title">创建新人物</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modal-char-id">
+                <div class="char-generator-layout">
+                    <div class="char-gen-controls">
+                        <div class="form-group"><label for="modal-char-name">姓名</label><input type="text" id="modal-char-name"></div>
+                        <div class="form-group"><label for="modal-char-gender">性别</label><input type="text" id="modal-char-gender"></div>
+                        <div class="form-group"><label for="modal-char-age">年龄</label><input type="text" id="modal-char-age"></div>
+                        <div class="form-group"><label for="modal-char-traits">核心特点</label><textarea id="modal-char-traits" rows="5"></textarea></div>
+                    </div>
+                    <div class="char-gen-display">
+                        <div class="form-group"><label for="modal-char-appearance">外貌</label><textarea id="modal-char-appearance" rows="3"></textarea></div>
+                        <div class="form-group"><label for="modal-char-attire">服饰</label><textarea id="modal-char-attire" rows="3"></textarea></div>
+                        <div class="form-group"><label for="modal-char-personality">性格</label><textarea id="modal-char-personality" rows="4"></textarea></div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="modal-char-flaw">原始缺陷</label>
+                    <textarea id="modal-char-flaw" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modal-char-conflict">冲突矛盾点</label>
+                    <textarea id="modal-char-conflict" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-char-from-modal-btn" class="action-btn">保存人物</button>
+            </div>
+        </div>
+    </div>
+   
+    <div id="notification-container"></div>
+
+    <script src="js/data/灵感与世界观数据.js"></script>
+    <script src="js/data/角色系统数据.js"></script>
+    <script src="js/data/角色原型数据.js"></script>
+    <script src="js/data/情节系统数据.js"></script>
+    <script src="js/data/情绪系统数据.js"></script>
+    <script src="js/data/叙事圣典数据.js"></script>
+
+    <script src="js/core/01_状态管理.js"></script>
+    <script src="js/core/02_通用工具.js"></script>
+    <script src="js/core/03_API接口.js"></script>
+    <script src="js/core/04_用户认证.js"></script>
+
+    <script src="js/data/01_灵感系统数据.js"></script>
+    <script src="js/database/角色系统面板.js"></script>
+    <script src="js/database/角色原型面板.js"></script>
+    <script src="js/database/情节系统面板.js"></script>
+    <script src="js/database/情绪系统面板.js"></script>
+    <script src="js/database/叙事圣典面板.js"></script>
+    
+    <script src="js/modules/09_热门灵感模板.js"></script>
+    <script src="js/modules/01_灵感系统.js"></script>
+    <script src="js/modules/02_世界观设定.js"></script>
+    <script src="js/modules/03_人物卡生成器.js"></script>
+    <script src="js/modules/project_manager.js"></script>
+    <script src="js/modules/04_故事卡生成器.js"></script>
+    <script src="js/modules/05_情绪卡生成器.js"></script>
+    <script src="js/modules/06_蓝图骨架.js"></script>
+    <script src="js/modules/07_圣典执笔者.js"></script>
+    <script src="js/modules/08_AI创作词典.js"></script>
+
+    <script src="js/main.js"></script>
+
+</body>
+</html>
